@@ -88,7 +88,7 @@ jobs:
             ${{ env.COMMIT_MSG }}
           draft: false
           prerelease: false
-      
+  
       - name: Upload to GitHub Release
         uses: actions/upload-release-asset@v1
         with:
