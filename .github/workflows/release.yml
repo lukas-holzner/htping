@@ -64,12 +64,6 @@ jobs:
           git commit -m "chore(release): bump version to ${{ env.NEW_VERSION }}"
           git tag "v${{ env.NEW_VERSION }}"
 
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
-
 
       - name: Build distribution
         run: |
@@ -97,9 +91,15 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/htping-*.whl
+          asset_path: ./dist/htping-${{ env.NEW_VERSION }}-py3-none-any.whl
           asset_name: htping-${{ env.NEW_VERSION }}.whl
           asset_content_type: application/zip
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
 
       # - name: Publish to PyPI
       #   run: |
