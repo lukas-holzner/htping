@@ -34,6 +34,7 @@ jobs:
           VERSION=$(poetry version -s)
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
           COMMIT_MSG=$(git log -1 --pretty=%B)
+          echo "COMMIT_MSG=${COMMIT_MSG}" >> $GITHUB_ENV
           echo "Commit Message: ${COMMIT_MSG}"
           if echo "$COMMIT_MSG" | grep -q "^feat:"; then
             poetry version minor
@@ -45,7 +46,7 @@ jobs:
             poetry version major
           else
             echo "No version bump based on commit message."
-            exit 0
+            exit 1
           fi
           NEW_VERSION=$(poetry version -s)
           echo "New Version: ${NEW_VERSION}"
