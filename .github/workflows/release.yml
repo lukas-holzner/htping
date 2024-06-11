@@ -1,0 +1,88 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0 
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+          poetry install
+
+      - name: Extract version from commit message
+        id: bump_version
+        run: |
+          echo "Previous Version: $(poetry version -s)"
+          VERSION=$(poetry version -s)
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+          COMMIT_MSG=$(git log -1 --pretty=%B)
+          echo "Commit Message: ${COMMIT_MSG}"
+          if echo "$COMMIT_MSG" | grep -q "^feat:"; then
+            poetry version minor
+          elif echo "$COMMIT_MSG" | grep -q "^fix:"; then
+            poetry version patch
+          elif echo "$COMMIT_MSG" | grep -q "^BREAKING CHANGE:"; then
+            poetry version major
+          elif echo "$COMMIT_MSG" | grep -q "BREAKING CHANGE"; then
+            poetry version major
+          else
+            echo "No version bump based on commit message."
+            exit 0
+          fi
+          NEW_VERSION=$(poetry version -s)
+          echo "New Version: ${NEW_VERSION}"
+          echo "NEW_VERSION=${NEW_VERSION}" >> $GITHUB_ENV
+
+      - name: Set up Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      
+      - name: Commit and tag version bump
+        if: success()
+        run: |
+          git checkout main
+          git add pyproject.toml
+          git commit -m "chore(release): bump version to ${{ env.NEW_VERSION }}"
+          git tag "v${{ env.NEW_VERSION }}"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+
+      - name: Create a new release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: "v${{ env.NEW_VERSION }}"
+          release_name: "v${{ env.NEW_VERSION }}"
+          body: "Release of version ${{ env.NEW_VERSION }}"
+          draft: false
+          prerelease: false
+
+      # - name: Publish to PyPI
+      #   run: |
+      #     poetry config pypi-token.pypi ${{ secrets.PYPI_PASSWORD }}
+      #     poetry publish --build --username ${{ secrets.PYPI_USERNAME }} --password ${{ secrets.PYPI_PASSWORD }}
