@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "htping"
-version = "0.1.0"
+version = "0.2.0"
 description = "A simple CLI tool to ping HTTP servers"
 authors = ["Lukas Holzner <git@lukas.lhal.de>"]
 license = "MIT"
