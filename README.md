@@ -1,33 +1,31 @@
-htping
-======
+# htping
+
 
 `htping` is a command-line tool that works like `ping`, but instead of sending ICMP packets, it repeatedly makes HTTP GET requests to check if a website is available.
 
-Installation
-------------
+## Installation
 
 To install `htping` from PyPI:
 
-```
+``` bash
 pip install htping
 ```
 
-Usage
------
+
+## Usage
 
 To use `htping`, simply run it from the command line followed by the URL you want to ping:
 
-```
+``` bash
 htping https://www.example.com
 ```
 
-Options
--------
+## Options
 
 - `-i`, `--interval`: Interval in seconds between requests (default is 1.0 seconds).
+- `-c`, `--count`: Number of pings to send. (default is none)
 
-Example
--------
+## Example
 
 ```
 htping https://www.example.com -i 2
@@ -35,7 +33,6 @@ htping https://www.example.com -i 2
 
 This will send HTTP GET requests to `https://www.example.com` every 2 seconds.
 
-About
------
+## About
 
 `htping` is a simple tool for monitoring the availability and responsiveness of websites by sending periodic HTTP GET requests.
