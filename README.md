@@ -1,5 +1,6 @@
-# htping
+# htping - Ping but for HTTP
 
+[![Release](https://github.com/lukas-holzner/htping/actions/workflows/release.yml/badge.svg)](https://github.com/lukas-holzner/htping/actions/workflows/release.yml)
 
 `htping` is a command-line tool that works like `ping`, but instead of sending ICMP packets, it repeatedly makes HTTP GET requests to check if a website is available.
 
