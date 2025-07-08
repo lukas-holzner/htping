@@ -7,6 +7,11 @@ set -e
 
 echo "🚀 Setting up htping development environment..."
 
+# Configure zsh and oh-my-zsh
+echo "🐚 Configuring zsh and oh-my-zsh..."
+# Enable git plugin in oh-my-zsh
+sed -i 's/plugins=(git)/plugins=(git)/' ~/.zshrc
+
 # Update system packages
 echo "📦 Updating system packages..."
 sudo apt-get update
@@ -16,6 +21,7 @@ echo "📝 Installing Poetry..."
 curl -sSL https://install.python-poetry.org | python3 -
 export PATH="/home/vscode/.local/bin:$PATH"
 echo 'export PATH="/home/vscode/.local/bin:$PATH"' >> ~/.bashrc
+echo 'export PATH="/home/vscode/.local/bin:$PATH"' >> ~/.zshrc
 
 # Configure Poetry
 echo "⚙️ Configuring Poetry..."
@@ -50,6 +56,16 @@ echo 'alias format="poetry run black htping/ tests/"' >> ~/.bashrc
 echo 'alias typecheck="poetry run mypy htping/"' >> ~/.bashrc
 echo 'alias precommit="pre-commit run --all-files"' >> ~/.bashrc
 echo 'alias precommit-update="pre-commit autoupdate"' >> ~/.bashrc
+
+# Also add aliases to zsh
+echo 'alias htping-dev="poetry run python -m htping.main"' >> ~/.zshrc
+echo 'alias test="poetry run pytest"' >> ~/.zshrc
+echo 'alias test-watch="poetry run pytest-watch"' >> ~/.zshrc
+echo 'alias lint="poetry run flake8 htping/ tests/"' >> ~/.zshrc
+echo 'alias format="poetry run black htping/ tests/"' >> ~/.zshrc
+echo 'alias typecheck="poetry run mypy htping/"' >> ~/.zshrc
+echo 'alias precommit="pre-commit run --all-files"' >> ~/.zshrc
+echo 'alias precommit-update="pre-commit autoupdate"' >> ~/.zshrc
 
 # Make the htping command available for development
 echo "🔗 Setting up development symlink..."
