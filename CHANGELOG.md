@@ -1,3 +1,10 @@
+# [0.5.0](https://github.com/lukas-holzner/htping/compare/v0.4.0...v0.5.0) (2025-07-08)
+
+
+### Features
+
+* add dependabot configuration for automated dependency updates and auto-merge workflow ([c2b020d](https://github.com/lukas-holzner/htping/commit/c2b020dfd1c3f5c4a7ca840d90445a35f931aae4))
+
 # [0.4.0](https://github.com/lukas-holzner/htping/compare/v0.3.0...v0.4.0) (2025-07-08)
 
 
