@@ -37,3 +37,17 @@ This will send HTTP GET requests to `https://www.example.com` every 2 seconds.
 ## About
 
 `htping` is a simple tool for monitoring the availability and responsiveness of websites by sending periodic HTTP GET requests.
+
+## Development
+
+For development setup with devcontainer support and pre-commit hooks, see `CONTRIBUTING.md`.
+
+### Quick Development Setup
+```bash
+# Using devcontainer (recommended)
+# Open in VS Code and select "Reopen in Container"
+
+# Or manual setup
+poetry install
+pre-commit install
+```
