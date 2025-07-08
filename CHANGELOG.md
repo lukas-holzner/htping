@@ -1,3 +1,10 @@
+# [0.3.0](https://github.com/lukas-holzner/htping/compare/v0.2.6...v0.3.0) (2025-07-08)
+
+
+### Features
+
+* implement semantic-release for automated versioning and changelog generation ([6d2a29d](https://github.com/lukas-holzner/htping/commit/6d2a29de8adb4745d09cb7c1ca67e5a85cf4d538))
+
 # Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
