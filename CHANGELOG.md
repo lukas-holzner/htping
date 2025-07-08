@@ -1,3 +1,15 @@
+# [0.4.0](https://github.com/lukas-holzner/htping/compare/v0.3.0...v0.4.0) (2025-07-08)
+
+
+### Bug Fixes
+
+* Merge branch 'main' into imp-project ([2d3ad73](https://github.com/lukas-holzner/htping/commit/2d3ad738dc81fc4bb8122a8e4a6a0070e593f182))
+
+
+### Features
+
+* enhance devcontainer setup with zsh configuration and aliases ([c7fad19](https://github.com/lukas-holzner/htping/commit/c7fad1977cde9ed878b0066d4b8c79ad97e3795c))
+
 # [0.3.0](https://github.com/lukas-holzner/htping/compare/v0.2.6...v0.3.0) (2025-07-08)
 
 
