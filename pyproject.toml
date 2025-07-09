@@ -8,7 +8,6 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-requests = "^2.31"
 httpx = {version = "^0.27", extras = ["http2"]}
 
 [tool.poetry.group.dev.dependencies]
@@ -19,7 +18,6 @@ flake8 = "^7.0"
 mypy = "^1.8"
 isort = "^6.0"
 pre-commit = "^4.2"
-types-requests = "^2.31"
 
 [tool.poetry.scripts]
 htping = "htping.main:main"
