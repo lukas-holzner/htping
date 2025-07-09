@@ -9,7 +9,7 @@ import argparse
 import json
 from typing import Optional, List, Dict, Any, Union
 
-# Summary statistics  
+# Summary statistics
 stats: Dict[str, Any] = {"transmitted": 0, "received": 0, "rtt_times": []}
 
 

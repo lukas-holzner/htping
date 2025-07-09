@@ -2,7 +2,6 @@ import unittest
 from htping.main import htping, stats, signal_handler
 from unittest.mock import patch, MagicMock
 import requests
-import httpx
 import io
 
 
@@ -20,7 +19,7 @@ class TestHtping(unittest.TestCase):
         mock_response.history = []
         mock_request.return_value = mock_response
 
-        with patch("sys.stdout", new_callable=io.StringIO) as mock_stdout:
+        with patch("sys.stdout", new_callable=io.StringIO):
             htping("http://example.com", 0.1, 1)  # Run htping for 1 iteration
 
         self.assertEqual(stats["transmitted"], 1)
@@ -32,7 +31,7 @@ class TestHtping(unittest.TestCase):
     def test_htping_failure(self, mock_request):
         mock_request.side_effect = requests.RequestException
 
-        with patch("sys.stdout", new_callable=io.StringIO) as mock_stdout:
+        with patch("sys.stdout", new_callable=io.StringIO):
             htping("http://example.com", 0.1, 1)  # Run htping for 1 iteration
 
         self.assertEqual(stats["transmitted"], 1)
@@ -63,7 +62,7 @@ class TestHtping(unittest.TestCase):
         mock_response.history = []
         mock_request.return_value = mock_response
 
-        with patch("sys.stdout", new_callable=io.StringIO) as mock_stdout:
+        with patch("sys.stdout", new_callable=io.StringIO):
             htping("http://example.com", 0.1, 1, method="POST")
 
         mock_request.assert_called_once()
@@ -80,7 +79,7 @@ class TestHtping(unittest.TestCase):
         mock_response.history = []
         mock_request.return_value = mock_response
 
-        with patch("sys.stdout", new_callable=io.StringIO) as mock_stdout:
+        with patch("sys.stdout", new_callable=io.StringIO):
             htping(
                 "http://example.com",
                 0.1,
@@ -104,7 +103,7 @@ class TestHtping(unittest.TestCase):
         mock_response.history = []
         mock_request.return_value = mock_response
 
-        with patch("sys.stdout", new_callable=io.StringIO) as mock_stdout:
+        with patch("sys.stdout", new_callable=io.StringIO):
             htping("http://example.com", 0.1, 1, data='{"key": "value"}')
 
         mock_request.assert_called_once()
