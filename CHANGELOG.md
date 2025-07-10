@@ -1,3 +1,16 @@
+# [0.6.0](https://github.com/lukas-holzner/htping/compare/v0.5.0...v0.6.0) (2025-07-10)
+
+
+### Bug Fixes
+
+* clean up test code and resolve linting issues ([a2866d3](https://github.com/lukas-holzner/htping/commit/a2866d3f9c0e6e002384b5ec6a0ee47ac1e20555))
+
+
+### Features
+
+* Add GitHub Actions CI workflow for pull requests ([37fa127](https://github.com/lukas-holzner/htping/commit/37fa127ffe62b0b7d344ff4dce0d3030daae0269))
+* implement advanced HTTP features for htping CLI ([b770251](https://github.com/lukas-holzner/htping/commit/b77025191114f29c1a5032426b86844dd6dd3ae2))
+
 # [0.5.0](https://github.com/lukas-holzner/htping/compare/v0.4.0...v0.5.0) (2025-07-08)
 
 
