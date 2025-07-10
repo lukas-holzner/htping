@@ -1,69 +1,16 @@
 # htping/main.py
 
-import requests
-import time
-import sys
-import signal
 import argparse
+import sys
 
-# Summary statistics
-stats = {"transmitted": 0, "received": 0, "rtt_times": []}
-
-
-# Handler for SIGINT (Ctrl+C)
-def signal_handler(sig, frame):
-    print("\n--- htping statistics ---")
-    transmitted = stats["transmitted"]
-    received = stats["received"]
-    packet_loss = (
-        ((transmitted - received) / transmitted) * 100 if transmitted > 0 else 0
-    )
-
-    print(
-        f"{transmitted} packets transmitted, {received} received, {packet_loss:.0f}% packet loss"
-    )
-
-    if stats["rtt_times"]:
-        min_rtt = min(stats["rtt_times"])
-        avg_rtt = sum(stats["rtt_times"]) / len(stats["rtt_times"])
-        max_rtt = max(stats["rtt_times"])
-        print(f"rtt min/avg/max = {min_rtt:.3f}/{avg_rtt:.3f}/{max_rtt:.3f} ms")
-
-    sys.exit(0)
+from .client import htping
+from .stats import stats, setup_signal_handler
 
 
-# Setup signal handler
-signal.signal(signal.SIGINT, signal_handler)
+def main() -> None:
+    """Main CLI entry point."""
+    setup_signal_handler()
 
-
-def htping(url, interval, count=None):
-    seq = 0
-    while count is None or seq < count:
-        seq += 1
-        stats["transmitted"] += 1
-        start_time = time.time()
-
-        try:
-            response = requests.get(url)
-            elapsed_time = (time.time() - start_time) * 1000  # Convert to ms
-            size = len(response.content)
-            status = response.status_code
-
-            print(
-                f"{size} bytes from {url}: http_seq={seq} status={status} time={elapsed_time:.2f} ms"
-            )
-
-            stats["received"] += 1
-            stats["rtt_times"].append(elapsed_time)
-
-        except requests.RequestException as e:
-            elapsed_time = (time.time() - start_time) * 1000  # Convert to ms
-            print(f"Request failed: http_seq={seq} time={elapsed_time:.2f} ms")
-
-        time.sleep(interval)
-
-
-def main():
     parser = argparse.ArgumentParser(description="HTTP Ping CLI Tool")
     parser.add_argument("url", type=str, help="URL to ping")
     parser.add_argument(
@@ -76,6 +23,80 @@ def main():
     parser.add_argument(
         "-c", "--count", type=int, default=None, help="Number of pings to send"
     )
+
+    # HTTP Method
+    parser.add_argument(
+        "-X",
+        "--method",
+        type=str,
+        default="GET",
+        help="HTTP method to use (GET, POST, PUT, DELETE, HEAD, PATCH). Default: GET",
+    )
+
+    # Timeout
+    parser.add_argument(
+        "--timeout",
+        type=float,
+        default=10.0,
+        help="Request timeout in seconds. Default: 10.0",
+    )
+
+    # Custom Headers
+    parser.add_argument(
+        "-H",
+        "--header",
+        action="append",
+        default=[],
+        help="Custom HTTP header in format 'Name: Value'. Can be used multiple times",
+    )
+
+    # Request Body
+    parser.add_argument(
+        "-d",
+        "--data",
+        type=str,
+        help="Request body data. Auto-detects JSON format",
+    )
+
+    # Redirect Control
+    parser.add_argument(
+        "--no-follow-redirects",
+        action="store_true",
+        help="Disable redirect following",
+    )
+
+    parser.add_argument(
+        "--max-redirects",
+        type=int,
+        default=5,
+        help="Maximum number of redirects to follow. Default: 5",
+    )
+
+    # HTTP/2 Support
+    parser.add_argument(
+        "--http2",
+        action="store_true",
+        help="Force HTTP/2 usage",
+    )
+
     args = parser.parse_args()
 
-    htping(args.url, args.interval, args.count)
+    # Validate HTTP method
+    method = args.method.upper()
+    if method not in ["GET", "POST", "PUT", "DELETE", "HEAD", "PATCH"]:
+        print(f"Error: Unsupported HTTP method '{method}'")
+        sys.exit(1)
+
+    htping(
+        args.url,
+        args.interval,
+        args.count,
+        method=method,
+        timeout=args.timeout,
+        headers=args.header,
+        data=args.data,
+        follow_redirects=not args.no_follow_redirects,
+        max_redirects=args.max_redirects,
+        http2=args.http2,
+        stats=stats,
+    )
