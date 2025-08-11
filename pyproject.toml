@@ -17,7 +17,7 @@ black = "^25.1"
 flake8 = "^7.0"
 mypy = "^1.17"
 isort = "^6.0"
-pre-commit = "^4.2"
+pre-commit = "^4.3"
 
 [tool.poetry.scripts]
 htping = "htping.main:main"
