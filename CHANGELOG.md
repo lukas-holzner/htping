@@ -1,3 +1,10 @@
+## [0.6.2](https://github.com/lukas-holzner/htping/compare/v0.6.1...v0.6.2) (2025-09-22)
+
+
+### Bug Fixes
+
+* update dependabot configuration and add scheduled release workflow ([f2aa6b6](https://github.com/lukas-holzner/htping/commit/f2aa6b6f983e477d91f01ced3f2dc98836b08324))
+
 ## [0.6.1](https://github.com/lukas-holzner/htping/compare/v0.6.0...v0.6.1) (2025-09-22)
 
 
