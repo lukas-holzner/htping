@@ -7,7 +7,7 @@ on:
       - main
     paths:
       # Only trigger on significant changes, not dependency updates
-      - "htping/**"
+      - "hping/**"
       - "tests/**"
       - "docs/**"
       - "README.md"

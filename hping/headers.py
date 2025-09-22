@@ -1,4 +1,4 @@
-# htping/headers.py
+# hping/headers.py
 
 from typing import Dict, List, Optional
 

@@ -1,4 +1,4 @@
-# Commit Message Guidelines for htping
+# Commit Message Guidelines for hping
 
 This project uses [Conventional Commits](https://www.conventionalcommits.org/) for standardized commit messages that enable automated semantic versioning and changelog generation.
 
@@ -15,6 +15,7 @@ This project uses [Conventional Commits](https://www.conventionalcommits.org/) f
 ## Types
 
 ### Main Types
+
 - **feat**: A new feature for the user
 - **fix**: A bug fix for the user
 - **docs**: Documentation changes
@@ -24,6 +25,7 @@ This project uses [Conventional Commits](https://www.conventionalcommits.org/) f
 - **chore**: Maintenance tasks, dependency updates, build changes
 
 ### Special Types
+
 - **perf**: Performance improvements
 - **ci**: Changes to CI/CD configuration
 - **build**: Changes to build system or external dependencies
@@ -31,7 +33,8 @@ This project uses [Conventional Commits](https://www.conventionalcommits.org/) f
 
 ## Scopes (Optional)
 
-Common scopes for htping:
+Common scopes for hping:
+
 - **cli**: Command-line interface changes
 - **http**: HTTP request handling
 - **stats**: Statistics and metrics
@@ -42,11 +45,13 @@ Common scopes for htping:
 ## Breaking Changes
 
 For breaking changes, add `!` after the type/scope:
+
 ```
 feat!: remove deprecated --timeout option
 ```
 
 Or add `BREAKING CHANGE:` in the footer:
+
 ```
 feat: add new authentication method
 
@@ -56,6 +61,7 @@ BREAKING CHANGE: The --auth flag now requires username:password format
 ## Examples
 
 ### Feature Addition
+
 ```
 feat(cli): add --timeout option for request timeout
 
@@ -66,6 +72,7 @@ Closes #42
 ```
 
 ### Bug Fix
+
 ```
 fix(http): handle connection timeout gracefully
 
@@ -76,6 +83,7 @@ Fixes #38
 ```
 
 ### Documentation Update
+
 ```
 docs: update README with new timeout option
 
@@ -84,6 +92,7 @@ usage examples.
 ```
 
 ### Refactoring
+
 ```
 refactor(stats): extract statistics display into separate function
 
@@ -92,6 +101,7 @@ a dedicated display_stats function for better testability.
 ```
 
 ### Test Addition
+
 ```
 test(http): add tests for timeout handling
 
@@ -100,6 +110,7 @@ timeouts and request failures.
 ```
 
 ### Dependency Update
+
 ```
 chore(deps): update requests to 2.31.0
 
@@ -107,6 +118,7 @@ Update requests library to latest version for security fixes.
 ```
 
 ### Performance Improvement
+
 ```
 perf(http): reduce memory usage for large responses
 
@@ -115,6 +127,7 @@ of loading entire response body into memory.
 ```
 
 ### CI/CD Changes
+
 ```
 ci: add Python 3.12 to test matrix
 
@@ -140,6 +153,7 @@ The commit types trigger different version bumps:
 6. **Reference issues and PRs when applicable**
 
 ### Good Examples
+
 ```
 feat: add request retry mechanism
 fix: prevent crash on invalid URL
@@ -147,6 +161,7 @@ docs: add installation instructions
 ```
 
 ### Bad Examples
+
 ```
 Added new feature  # Past tense, not descriptive
 fix bug            # Too vague
@@ -162,6 +177,7 @@ Update README.md   # Not following convention
 ## Pre-commit Checklist
 
 Before committing:
+
 - [ ] Commit message follows conventional format
 - [ ] Type accurately describes the change
 - [ ] Description is clear and concise

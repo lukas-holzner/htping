@@ -1,4 +1,4 @@
-# htping/stats.py
+# hping/stats.py
 
 import signal
 import sys
@@ -10,7 +10,7 @@ stats: Dict[str, Any] = {"transmitted": 0, "received": 0, "rtt_times": []}
 
 def signal_handler(sig: Any, frame: Any) -> None:
     """Handler for SIGINT (Ctrl+C) to display statistics."""
-    print("\n--- htping statistics ---")
+    print("\n--- hping statistics ---")
     transmitted = stats["transmitted"]
     received = stats["received"]
     packet_loss = (

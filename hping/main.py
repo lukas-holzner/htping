@@ -1,9 +1,9 @@
-# htping/main.py
+# hping/main.py
 
 import argparse
 import sys
 
-from .client import htping
+from .client import hping
 from .stats import setup_signal_handler, stats
 
 
@@ -87,7 +87,7 @@ def main() -> None:
         print(f"Error: Unsupported HTTP method '{method}'")
         sys.exit(1)
 
-    htping(
+    hping(
         args.url,
         args.interval,
         args.count,

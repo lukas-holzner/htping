@@ -1,4 +1,4 @@
-# htping/client.py
+# hping/client.py
 
 import json
 import time
@@ -7,7 +7,7 @@ from typing import Any, Dict, List, Optional
 import httpx
 
 
-def htping(
+def hping(
     url: str,
     interval: float,
     count: Optional[int] = None,

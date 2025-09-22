@@ -2,7 +2,7 @@ import io
 import unittest
 from unittest.mock import patch
 
-from htping.headers import parse_headers
+from hping.headers import parse_headers
 
 
 class TestHeaders(unittest.TestCase):
