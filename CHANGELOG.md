@@ -1,3 +1,11 @@
+## [0.7.0](https://github.com/lukas-holzner/hping/compare/v0.6.2...v0.7.0) (2025-09-22)
+
+
+### Features
+
+* add workflow for publishing to PyPI and remove deprecated publish steps from release workflow ([6f9e43d](https://github.com/lukas-holzner/hping/commit/6f9e43d12a155bbde2fbdbffb307d1d173873c98))
+* enhance pre-commit workflow with auto-fix and commit changes ([3eab1e9](https://github.com/lukas-holzner/hping/commit/3eab1e9a8f36622289a6f9a5e98bc202a10f1bb8))
+
 ## [0.6.2](https://github.com/lukas-holzner/hping/compare/v0.6.1...v0.6.2) (2025-09-22)
 
 ### Bug Fixes
