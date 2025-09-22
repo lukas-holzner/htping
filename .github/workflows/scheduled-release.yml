@@ -1,0 +1,89 @@
+name: Scheduled Release
+
+on:
+  schedule:
+    # Run every Monday at 10:00 UTC
+    - cron: "0 10 * * 1"
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Check for unreleased changes
+        id: check-changes
+        run: |
+          # Get the latest release tag
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+
+          if [ -z "$LATEST_TAG" ]; then
+            echo "No previous releases found, proceeding with release"
+            echo "has-changes=true" >> $GITHUB_OUTPUT
+          else
+            # Check if there are commits since the last release
+            COMMITS_SINCE_RELEASE=$(git rev-list ${LATEST_TAG}..HEAD --count)
+            echo "Commits since last release: $COMMITS_SINCE_RELEASE"
+
+            if [ "$COMMITS_SINCE_RELEASE" -gt 0 ]; then
+              echo "has-changes=true" >> $GITHUB_OUTPUT
+            else
+              echo "has-changes=false" >> $GITHUB_OUTPUT
+            fi
+          fi
+
+      - name: Set up Python
+        if: steps.check-changes.outputs.has-changes == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Set up Node.js
+        if: steps.check-changes.outputs.has-changes == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Python dependencies
+        if: steps.check-changes.outputs.has-changes == 'true'
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+          poetry install
+
+      - name: Install semantic-release
+        if: steps.check-changes.outputs.has-changes == 'true'
+        run: |
+          npm install -g semantic-release@23
+          npm install -g @semantic-release/changelog@6
+          npm install -g @semantic-release/exec@6
+          npm install -g @semantic-release/git@10
+          npm install -g @semantic-release/github@10
+          npm install -g conventional-changelog-conventionalcommits@7
+
+      - name: Build distribution
+        if: steps.check-changes.outputs.has-changes == 'true'
+        run: |
+          poetry build
+
+      - name: Release
+        if: steps.check-changes.outputs.has-changes == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npx semantic-release
+
+      - name: No changes to release
+        if: steps.check-changes.outputs.has-changes == 'false'
+        run: |
+          echo "No unreleased changes found, skipping release"
