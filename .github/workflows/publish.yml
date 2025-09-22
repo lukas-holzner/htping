@@ -1,10 +1,9 @@
 name: Publish to PyPI
 
 on:
-  workflow_run:
-    workflows: ["Release", "Scheduled Release"]
+  release:
     types:
-      - completed
+      - published
   workflow_dispatch: # Allow manual triggering
     inputs:
       tag:
@@ -14,8 +13,9 @@ on:
 
 jobs:
   publish:
+    name: Upload release to PyPI
     runs-on: ubuntu-latest
-    if: github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch'
+    environment: pypi
     permissions:
       contents: read
       id-token: write # Required for trusted publishing
@@ -32,10 +32,17 @@ jobs:
           if [ "${{ github.event_name }}" == "workflow_dispatch" ] && [ -n "${{ inputs.tag }}" ]; then
             TAG="${{ inputs.tag }}"
             echo "Using manual tag: $TAG"
+            git checkout $TAG
+          elif [ "${{ github.event_name }}" == "release" ]; then
+            TAG="${{ github.event.release.tag_name }}"
+            echo "Using release tag: $TAG"
           else
-            # Get the latest tag
+            # Get the latest tag for fallback
             TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
             echo "Using latest tag: $TAG"
+            if [ -n "$TAG" ]; then
+              git checkout $TAG
+            fi
           fi
 
           if [ -z "$TAG" ]; then
@@ -46,14 +53,10 @@ jobs:
           echo "tag=$TAG" >> $GITHUB_OUTPUT
           echo "Publishing tag: $TAG"
 
-      - name: Checkout specific tag
-        run: |
-          git checkout ${{ steps.get-tag.outputs.tag }}
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: "3.x"
 
       - name: Install Poetry
         uses: snok/install-poetry@v1
@@ -65,6 +68,7 @@ jobs:
       - name: Install dependencies
         run: |
           poetry install --no-interaction
+          python -m pip install -U build twine
 
       - name: Verify version matches tag
         run: |
@@ -88,25 +92,35 @@ jobs:
       - name: Check distribution
         run: |
           ls -la dist/
-          poetry run twine check dist/*
+          python -m twine check dist/*
 
-      - name: Publish to PyPI (using API token)
-        if: env.PYPI_API_TOKEN != ''
-        env:
-          PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+      - name: Mint API token
+        id: mint-token
         run: |
-          poetry config pypi-token.pypi $PYPI_API_TOKEN
-          poetry publish
+          # retrieve the ambient OIDC token
+          resp=$(curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=pypi")
+          oidc_token=$(jq -r '.value' <<< "${resp}")
 
-      - name: Publish to PyPI (using trusted publishing)
-        if: env.PYPI_API_TOKEN == ''
+          # exchange the OIDC token for an API token
+          resp=$(curl -X POST https://pypi.org/_/oidc/mint-token -d "{\"token\": \"${oidc_token}\"}")
+          api_token=$(jq -r '.token' <<< "${resp}")
+
+          # mask the newly minted API token, so that we don't accidentally leak it
+          echo "::add-mask::${api_token}"
+
+          # output the API token for the next step
+          echo "api-token=${api_token}" >> "${GITHUB_OUTPUT}"
+
+      - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
+          password: ${{ steps.mint-token.outputs.api-token }}
           packages-dir: dist/
           skip-existing: true
           verbose: true
 
-      - name: Create release assets info
+      - name: Create release summary
         run: |
           echo "## Published to PyPI 🎉" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
