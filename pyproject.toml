@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "htping"
+name = "hping"
 version = "0.6.2"
 description = "A simple CLI tool to ping HTTP servers"
 authors = ["Lukas Holzner <git@lukas.lhal.de>"]
@@ -20,7 +20,7 @@ isort = "^6.0"
 pre-commit = "^4.3"
 
 [tool.poetry.scripts]
-htping = "htping.main:main"
+hping = "hping.main:main"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -47,7 +47,7 @@ extend-exclude = '''
 profile = "black"
 multi_line_output = 3
 line_length = 88
-known_first_party = ["htping"]
+known_first_party = ["hping"]
 
 [tool.mypy]
 python_version = "3.10"

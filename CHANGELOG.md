@@ -1,55 +1,47 @@
-## [0.6.2](https://github.com/lukas-holzner/htping/compare/v0.6.1...v0.6.2) (2025-09-22)
-
-
-### Bug Fixes
-
-* update dependabot configuration and add scheduled release workflow ([f2aa6b6](https://github.com/lukas-holzner/htping/commit/f2aa6b6f983e477d91f01ced3f2dc98836b08324))
-
-## [0.6.1](https://github.com/lukas-holzner/htping/compare/v0.6.0...v0.6.1) (2025-09-22)
-
+## [0.6.2](https://github.com/lukas-holzner/hping/compare/v0.6.1...v0.6.2) (2025-09-22)
 
 ### Bug Fixes
 
-* remove extra_args from pre-commit hook for push events ([617d9c3](https://github.com/lukas-holzner/htping/commit/617d9c3261fcb4f111038b98fe14b9558d6e6749))
+* update dependabot configuration and add scheduled release workflow ([f2aa6b6](https://github.com/lukas-holzner/hping/commit/f2aa6b6f983e477d91f01ced3f2dc98836b08324))
 
-# [0.6.0](https://github.com/lukas-holzner/htping/compare/v0.5.0...v0.6.0) (2025-07-10)
-
-
-### Bug Fixes
-
-* clean up test code and resolve linting issues ([a2866d3](https://github.com/lukas-holzner/htping/commit/a2866d3f9c0e6e002384b5ec6a0ee47ac1e20555))
-
-
-### Features
-
-* Add GitHub Actions CI workflow for pull requests ([37fa127](https://github.com/lukas-holzner/htping/commit/37fa127ffe62b0b7d344ff4dce0d3030daae0269))
-* implement advanced HTTP features for htping CLI ([b770251](https://github.com/lukas-holzner/htping/commit/b77025191114f29c1a5032426b86844dd6dd3ae2))
-
-# [0.5.0](https://github.com/lukas-holzner/htping/compare/v0.4.0...v0.5.0) (2025-07-08)
-
-
-### Features
-
-* add dependabot configuration for automated dependency updates and auto-merge workflow ([c2b020d](https://github.com/lukas-holzner/htping/commit/c2b020dfd1c3f5c4a7ca840d90445a35f931aae4))
-
-# [0.4.0](https://github.com/lukas-holzner/htping/compare/v0.3.0...v0.4.0) (2025-07-08)
-
+## [0.6.1](https://github.com/lukas-holzner/hping/compare/v0.6.0...v0.6.1) (2025-09-22)
 
 ### Bug Fixes
 
-* Merge branch 'main' into imp-project ([2d3ad73](https://github.com/lukas-holzner/htping/commit/2d3ad738dc81fc4bb8122a8e4a6a0070e593f182))
+* remove extra_args from pre-commit hook for push events ([617d9c3](https://github.com/lukas-holzner/hping/commit/617d9c3261fcb4f111038b98fe14b9558d6e6749))
 
+# [0.6.0](https://github.com/lukas-holzner/hping/compare/v0.5.0...v0.6.0) (2025-07-10)
 
-### Features
+### Bug Fixes
 
-* enhance devcontainer setup with zsh configuration and aliases ([c7fad19](https://github.com/lukas-holzner/htping/commit/c7fad1977cde9ed878b0066d4b8c79ad97e3795c))
-
-# [0.3.0](https://github.com/lukas-holzner/htping/compare/v0.2.6...v0.3.0) (2025-07-08)
-
+* clean up test code and resolve linting issues ([a2866d3](https://github.com/lukas-holzner/hping/commit/a2866d3f9c0e6e002384b5ec6a0ee47ac1e20555))
 
 ### Features
 
-* implement semantic-release for automated versioning and changelog generation ([6d2a29d](https://github.com/lukas-holzner/htping/commit/6d2a29de8adb4745d09cb7c1ca67e5a85cf4d538))
+* Add GitHub Actions CI workflow for pull requests ([37fa127](https://github.com/lukas-holzner/hping/commit/37fa127ffe62b0b7d344ff4dce0d3030daae0269))
+* implement advanced HTTP features for hping CLI ([b770251](https://github.com/lukas-holzner/hping/commit/b77025191114f29c1a5032426b86844dd6dd3ae2))
+
+# [0.5.0](https://github.com/lukas-holzner/hping/compare/v0.4.0...v0.5.0) (2025-07-08)
+
+### Features
+
+* add dependabot configuration for automated dependency updates and auto-merge workflow ([c2b020d](https://github.com/lukas-holzner/hping/commit/c2b020dfd1c3f5c4a7ca840d90445a35f931aae4))
+
+# [0.4.0](https://github.com/lukas-holzner/hping/compare/v0.3.0...v0.4.0) (2025-07-08)
+
+### Bug Fixes
+
+* Merge branch 'main' into imp-project ([2d3ad73](https://github.com/lukas-holzner/hping/commit/2d3ad738dc81fc4bb8122a8e4a6a0070e593f182))
+
+### Features
+
+* enhance devcontainer setup with zsh configuration and aliases ([c7fad19](https://github.com/lukas-holzner/hping/commit/c7fad1977cde9ed878b0066d4b8c79ad97e3795c))
+
+# [0.3.0](https://github.com/lukas-holzner/hping/compare/v0.2.6...v0.3.0) (2025-07-08)
+
+### Features
+
+* implement semantic-release for automated versioning and changelog generation ([6d2a29d](https://github.com/lukas-holzner/hping/commit/6d2a29de8adb4745d09cb7c1ca67e5a85cf4d538))
 
 # Changelog
 
@@ -60,10 +52,12 @@ This file will be automatically updated by semantic-release based on conventiona
 ## Previous Releases
 
 ### v0.2.6 (2023-XX-XX)
+
 - fix: Readme link in project.toml
-- fix: Fixing wheel filename
+* fix: Fixing wheel filename
 
 ### v0.2.5 and earlier
+
 - Various improvements and fixes (see git history)
 
 ---

@@ -3,21 +3,21 @@ import sys
 import unittest
 from unittest.mock import patch
 
-from htping.main import main
+from hping.main import main
 
 
 class TestMain(unittest.TestCase):
-    @patch("htping.main.htping")
-    @patch("htping.main.setup_signal_handler")
-    def test_main_basic_args(self, mock_setup, mock_htping):
-        test_args = ["htping", "http://example.com"]
+    @patch("hping.main.hping")
+    @patch("hping.main.setup_signal_handler")
+    def test_main_basic_args(self, mock_setup, mock_hping):
+        test_args = ["hping", "http://example.com"]
 
         with patch.object(sys, "argv", test_args):
             main()
 
         mock_setup.assert_called_once()
-        mock_htping.assert_called_once()
-        call_args = mock_htping.call_args
+        mock_hping.assert_called_once()
+        call_args = mock_hping.call_args
         self.assertEqual(call_args[0][0], "http://example.com")  # url
         self.assertEqual(call_args[0][1], 1.0)  # interval
         self.assertEqual(call_args[0][2], None)  # count
@@ -29,11 +29,11 @@ class TestMain(unittest.TestCase):
         self.assertEqual(call_args[1]["max_redirects"], 5)
         self.assertEqual(call_args[1]["http2"], False)
 
-    @patch("htping.main.htping")
-    @patch("htping.main.setup_signal_handler")
-    def test_main_with_options(self, mock_setup, mock_htping):
+    @patch("hping.main.hping")
+    @patch("hping.main.setup_signal_handler")
+    def test_main_with_options(self, mock_setup, mock_hping):
         test_args = [
-            "htping",
+            "hping",
             "http://example.com",
             "-X",
             "POST",
@@ -59,8 +59,8 @@ class TestMain(unittest.TestCase):
             main()
 
         mock_setup.assert_called_once()
-        mock_htping.assert_called_once()
-        call_args = mock_htping.call_args
+        mock_hping.assert_called_once()
+        call_args = mock_hping.call_args
         self.assertEqual(call_args[0][0], "http://example.com")  # url
         self.assertEqual(call_args[0][1], 2.0)  # interval
         self.assertEqual(call_args[0][2], 5)  # count
@@ -75,10 +75,10 @@ class TestMain(unittest.TestCase):
         self.assertEqual(call_args[1]["max_redirects"], 10)
         self.assertEqual(call_args[1]["http2"], True)
 
-    @patch("htping.main.htping")
-    @patch("htping.main.setup_signal_handler")
-    def test_main_invalid_method(self, mock_setup, mock_htping):
-        test_args = ["htping", "http://example.com", "-X", "INVALID"]
+    @patch("hping.main.hping")
+    @patch("hping.main.setup_signal_handler")
+    def test_main_invalid_method(self, mock_setup, mock_hping):
+        test_args = ["hping", "http://example.com", "-X", "INVALID"]
 
         with patch.object(sys, "argv", test_args):
             with patch("sys.stdout", new_callable=io.StringIO) as mock_stdout:
@@ -88,19 +88,19 @@ class TestMain(unittest.TestCase):
         output = mock_stdout.getvalue()
         self.assertIn("Unsupported HTTP method", output)
         mock_setup.assert_called_once()
-        mock_htping.assert_not_called()
+        mock_hping.assert_not_called()
 
-    @patch("htping.main.htping")
-    @patch("htping.main.setup_signal_handler")
-    def test_main_case_insensitive_method(self, mock_setup, mock_htping):
-        test_args = ["htping", "http://example.com", "-X", "post"]
+    @patch("hping.main.hping")
+    @patch("hping.main.setup_signal_handler")
+    def test_main_case_insensitive_method(self, mock_setup, mock_hping):
+        test_args = ["hping", "http://example.com", "-X", "post"]
 
         with patch.object(sys, "argv", test_args):
             main()
 
         mock_setup.assert_called_once()
-        mock_htping.assert_called_once()
-        call_args = mock_htping.call_args
+        mock_hping.assert_called_once()
+        call_args = mock_hping.call_args
         self.assertEqual(call_args[1]["method"], "POST")
 
 

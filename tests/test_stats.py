@@ -3,7 +3,7 @@ import signal as signal_module
 import unittest
 from unittest.mock import patch
 
-from htping.stats import setup_signal_handler, signal_handler, stats
+from hping.stats import setup_signal_handler, signal_handler, stats
 
 
 class TestStats(unittest.TestCase):

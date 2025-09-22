@@ -7,7 +7,7 @@ on:
       - main
     paths:
       # Only trigger on significant changes, not dependency updates
-      - "htping/**"
+      - "hping/**"
       - "tests/**"
       - "docs/**"
       - "README.md"
@@ -63,8 +63,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npx semantic-release
-
-      # - name: Publish to PyPI
-      #   run: |
-      #     poetry config pypi-token.pypi ${{ secrets.PYPI_PASSWORD }}
-      #     poetry publish --build --username ${{ secrets.PYPI_USERNAME }} --password ${{ secrets.PYPI_PASSWORD }}

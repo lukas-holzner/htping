@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# Post-create script for htping devcontainer
+# Post-create script for hping devcontainer
 # This script runs after the container is created to set up the development environment
 
 set -e
 
-echo "🚀 Setting up htping development environment..."
+echo "🚀 Setting up hping development environment..."
 
 # Configure zsh and oh-my-zsh
 echo "🐚 Configuring zsh and oh-my-zsh..."
@@ -45,39 +45,39 @@ echo "✅ Pre-commit hooks installed successfully!"
 
 # Set up Git configuration helpers
 echo "🔧 Setting up Git helpers..."
-git config --global --add safe.directory /workspaces/htping
+git config --global --add safe.directory /workspaces/hping
 
 # Create useful aliases
 echo "🎯 Setting up useful aliases..."
-echo 'alias htping-dev="poetry run python -m htping.main"' >> ~/.bashrc
+echo 'alias hping-dev="poetry run python -m hping.main"' >> ~/.bashrc
 echo 'alias test="poetry run pytest"' >> ~/.bashrc
 echo 'alias test-watch="poetry run pytest-watch"' >> ~/.bashrc
-echo 'alias lint="poetry run flake8 htping/ tests/"' >> ~/.bashrc
-echo 'alias format="poetry run black htping/ tests/"' >> ~/.bashrc
-echo 'alias typecheck="poetry run mypy htping/"' >> ~/.bashrc
+echo 'alias lint="poetry run flake8 hping/ tests/"' >> ~/.bashrc
+echo 'alias format="poetry run black hping/ tests/"' >> ~/.bashrc
+echo 'alias typecheck="poetry run mypy hping/"' >> ~/.bashrc
 echo 'alias precommit="pre-commit run --all-files"' >> ~/.bashrc
 echo 'alias precommit-update="pre-commit autoupdate"' >> ~/.bashrc
 
 # Also add aliases to zsh
-echo 'alias htping-dev="poetry run python -m htping.main"' >> ~/.zshrc
+echo 'alias hping-dev="poetry run python -m hping.main"' >> ~/.zshrc
 echo 'alias test="poetry run pytest"' >> ~/.zshrc
 echo 'alias test-watch="poetry run pytest-watch"' >> ~/.zshrc
-echo 'alias lint="poetry run flake8 htping/ tests/"' >> ~/.zshrc
-echo 'alias format="poetry run black htping/ tests/"' >> ~/.zshrc
-echo 'alias typecheck="poetry run mypy htping/"' >> ~/.zshrc
+echo 'alias lint="poetry run flake8 hping/ tests/"' >> ~/.zshrc
+echo 'alias format="poetry run black hping/ tests/"' >> ~/.zshrc
+echo 'alias typecheck="poetry run mypy hping/"' >> ~/.zshrc
 echo 'alias precommit="pre-commit run --all-files"' >> ~/.zshrc
 echo 'alias precommit-update="pre-commit autoupdate"' >> ~/.zshrc
 
-# Make the htping command available for development
+# Make the hping command available for development
 echo "🔗 Setting up development symlink..."
 poetry install
 
 # Display useful information
 echo ""
-echo "✅ htping development environment setup complete!"
+echo "✅ hping development environment setup complete!"
 echo ""
 echo "📋 Available commands:"
-echo "  htping-dev <url>     - Run htping in development mode"
+echo "  hping-dev <url>     - Run hping in development mode"
 echo "  test                 - Run test suite"
 echo "  lint                 - Run code linting"
 echo "  format               - Format code with Black"
@@ -90,6 +90,6 @@ echo ""
 
 # Test installation
 echo "🧪 Testing installation..."
-poetry run python -c "import htping; print('✅ htping module imported successfully')"
+poetry run python -c "import hping; print('✅ hping module imported successfully')"
 poetry run pytest --version
 echo "✅ All tools are working correctly!"

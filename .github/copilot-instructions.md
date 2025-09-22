@@ -1,12 +1,12 @@
-# GitHub Copilot Instructions for htping
+# GitHub Copilot Instructions for hping
 
 ## Project Context
 
-htping is a Python CLI tool that functions as an HTTP version of the traditional `ping` command. It sends periodic HTTP GET requests to monitor website availability and responsiveness.
+hping is a Python CLI tool that functions as an HTTP version of the traditional `ping` command. It sends periodic HTTP GET requests to monitor website availability and responsiveness.
 
 ## Project Structure
 
-- `htping/main.py` - Core CLI functionality with HTTP request handling
+- `hping/main.py` - Core CLI functionality with HTTP request handling
 - `tests/test_main.py` - Unit tests with pytest and mocking
 - `pyproject.toml` - Poetry configuration and dependencies
 - Uses semantic-release for automated versioning
@@ -21,7 +21,7 @@ htping is a Python CLI tool that functions as an HTTP version of the traditional
 4. **Error handling** should be explicit with appropriate exception types
 5. **Import organization**: standard library, third-party, local imports (separated by blank lines)
 
-### Specific Patterns for htping
+### Specific Patterns for hping
 
 1. **HTTP requests**: Always use the `requests` library with proper exception handling
 2. **Time measurements**: Use `time.time()` and convert to milliseconds for consistency
@@ -41,7 +41,7 @@ htping is a Python CLI tool that functions as an HTTP version of the traditional
 
 ### Function Definition with Type Hints
 ```python
-def htping(url: str, interval: float, count: Optional[int] = None) -> None:
+def hping(url: str, interval: float, count: Optional[int] = None) -> None:
     """Send HTTP requests to a URL at regular intervals.
 
     Args:
@@ -87,7 +87,7 @@ def test_function_name(mocker):
 ## Common Tasks
 
 1. **Adding new CLI options**: Extend the `argparse` configuration in `main()`
-2. **Modifying HTTP behavior**: Update the `htping()` function
+2. **Modifying HTTP behavior**: Update the `hping()` function
 3. **Adding statistics**: Extend the global `stats` dictionary
 4. **Adding tests**: Create new test functions in `tests/test_main.py`
 
