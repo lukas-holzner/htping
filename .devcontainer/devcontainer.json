@@ -1,7 +1,6 @@
 {
   "name": "htping Development Environment",
   "image": "mcr.microsoft.com/devcontainers/python:1-3.12-bullseye",
-
   "features": {
     "ghcr.io/devcontainers/features/git:1": {},
     "ghcr.io/devcontainers/features/github-cli:1": {},
@@ -18,7 +17,6 @@
       "userGid": "automatic"
     }
   },
-
   "customizations": {
     "vscode": {
       "extensions": [
@@ -42,7 +40,9 @@
       "settings": {
         "python.defaultInterpreterPath": "/usr/local/bin/python",
         "python.formatting.provider": "black",
-        "python.formatting.blackArgs": ["--line-length=88"],
+        "python.formatting.blackArgs": [
+          "--line-length=88"
+        ],
         "python.linting.enabled": true,
         "python.linting.pylintEnabled": true,
         "python.linting.flake8Enabled": true,
@@ -62,16 +62,12 @@
       }
     }
   },
-
   "postCreateCommand": "bash .devcontainer/post-create.sh",
-
   "remoteUser": "vscode",
-
   "mounts": [
+    "type=bind,source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,readonly",
     "source=${localWorkspaceFolder}/.git,target=/workspaces/htping/.git,type=bind,consistency=cached"
   ],
-
   "forwardPorts": [],
-
   "portsAttributes": {}
 }

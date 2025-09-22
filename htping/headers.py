@@ -1,6 +1,6 @@
 # htping/headers.py
 
-from typing import Optional, List, Dict
+from typing import Dict, List, Optional
 
 
 def parse_headers(headers: Optional[List[str]]) -> Dict[str, str]:

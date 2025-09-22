@@ -1,9 +1,10 @@
 # htping/client.py
 
-import httpx
-import time
 import json
-from typing import Optional, List, Dict, Any
+import time
+from typing import Any, Dict, List, Optional
+
+import httpx
 
 
 def htping(
@@ -17,7 +18,7 @@ def htping(
     follow_redirects: bool = True,
     max_redirects: int = 5,
     http2: bool = False,
-    stats: Dict[str, Any] = None,
+    stats: Optional[Dict[str, Any]] = None,
 ) -> None:
     """Send HTTP requests to a URL at regular intervals.
 

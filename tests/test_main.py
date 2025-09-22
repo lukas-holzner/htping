@@ -1,8 +1,9 @@
-import unittest
-from unittest.mock import patch, MagicMock
-from htping.main import main
 import io
 import sys
+import unittest
+from unittest.mock import patch
+
+from htping.main import main
 
 
 class TestMain(unittest.TestCase):
@@ -10,10 +11,10 @@ class TestMain(unittest.TestCase):
     @patch("htping.main.setup_signal_handler")
     def test_main_basic_args(self, mock_setup, mock_htping):
         test_args = ["htping", "http://example.com"]
-        
-        with patch.object(sys, 'argv', test_args):
+
+        with patch.object(sys, "argv", test_args):
             main()
-            
+
         mock_setup.assert_called_once()
         mock_htping.assert_called_once()
         call_args = mock_htping.call_args
@@ -34,21 +35,29 @@ class TestMain(unittest.TestCase):
         test_args = [
             "htping",
             "http://example.com",
-            "-X", "POST",
-            "-i", "2.0",
-            "-c", "5",
-            "--timeout", "30",
-            "-H", "Authorization: Bearer token",
-            "-H", "Content-Type: application/json",
-            "-d", '{"key": "value"}',
+            "-X",
+            "POST",
+            "-i",
+            "2.0",
+            "-c",
+            "5",
+            "--timeout",
+            "30",
+            "-H",
+            "Authorization: Bearer token",
+            "-H",
+            "Content-Type: application/json",
+            "-d",
+            '{"key": "value"}',
             "--no-follow-redirects",
-            "--max-redirects", "10",
-            "--http2"
+            "--max-redirects",
+            "10",
+            "--http2",
         ]
-        
-        with patch.object(sys, 'argv', test_args):
+
+        with patch.object(sys, "argv", test_args):
             main()
-            
+
         mock_setup.assert_called_once()
         mock_htping.assert_called_once()
         call_args = mock_htping.call_args
@@ -57,7 +66,10 @@ class TestMain(unittest.TestCase):
         self.assertEqual(call_args[0][2], 5)  # count
         self.assertEqual(call_args[1]["method"], "POST")
         self.assertEqual(call_args[1]["timeout"], 30.0)
-        self.assertEqual(call_args[1]["headers"], ["Authorization: Bearer token", "Content-Type: application/json"])
+        self.assertEqual(
+            call_args[1]["headers"],
+            ["Authorization: Bearer token", "Content-Type: application/json"],
+        )
         self.assertEqual(call_args[1]["data"], '{"key": "value"}')
         self.assertEqual(call_args[1]["follow_redirects"], False)
         self.assertEqual(call_args[1]["max_redirects"], 10)
@@ -67,12 +79,12 @@ class TestMain(unittest.TestCase):
     @patch("htping.main.setup_signal_handler")
     def test_main_invalid_method(self, mock_setup, mock_htping):
         test_args = ["htping", "http://example.com", "-X", "INVALID"]
-        
-        with patch.object(sys, 'argv', test_args):
+
+        with patch.object(sys, "argv", test_args):
             with patch("sys.stdout", new_callable=io.StringIO) as mock_stdout:
                 with self.assertRaises(SystemExit):
                     main()
-                    
+
         output = mock_stdout.getvalue()
         self.assertIn("Unsupported HTTP method", output)
         mock_setup.assert_called_once()
@@ -82,10 +94,10 @@ class TestMain(unittest.TestCase):
     @patch("htping.main.setup_signal_handler")
     def test_main_case_insensitive_method(self, mock_setup, mock_htping):
         test_args = ["htping", "http://example.com", "-X", "post"]
-        
-        with patch.object(sys, 'argv', test_args):
+
+        with patch.object(sys, "argv", test_args):
             main()
-            
+
         mock_setup.assert_called_once()
         mock_htping.assert_called_once()
         call_args = mock_htping.call_args
