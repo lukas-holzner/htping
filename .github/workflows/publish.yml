@@ -1,0 +1,119 @@
+name: Publish to PyPI
+
+on:
+  workflow_run:
+    workflows: ["Release", "Scheduled Release"]
+    types:
+      - completed
+  workflow_dispatch: # Allow manual triggering
+    inputs:
+      tag:
+        description: "Git tag to publish (optional - uses latest if not specified)"
+        required: false
+        type: string
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch'
+    permissions:
+      contents: read
+      id-token: write # Required for trusted publishing
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine tag to publish
+        id: get-tag
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ] && [ -n "${{ inputs.tag }}" ]; then
+            TAG="${{ inputs.tag }}"
+            echo "Using manual tag: $TAG"
+          else
+            # Get the latest tag
+            TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+            echo "Using latest tag: $TAG"
+          fi
+
+          if [ -z "$TAG" ]; then
+            echo "No tag found, cannot publish"
+            exit 1
+          fi
+
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "Publishing tag: $TAG"
+
+      - name: Checkout specific tag
+        run: |
+          git checkout ${{ steps.get-tag.outputs.tag }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: latest
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+
+      - name: Install dependencies
+        run: |
+          poetry install --no-interaction
+
+      - name: Verify version matches tag
+        run: |
+          POETRY_VERSION=$(poetry version --short)
+          TAG_VERSION="${{ steps.get-tag.outputs.tag }}"
+          # Remove 'v' prefix if present
+          TAG_VERSION=${TAG_VERSION#v}
+
+          echo "Poetry version: $POETRY_VERSION"
+          echo "Tag version: $TAG_VERSION"
+
+          if [ "$POETRY_VERSION" != "$TAG_VERSION" ]; then
+            echo "Version mismatch! Poetry: $POETRY_VERSION, Tag: $TAG_VERSION"
+            exit 1
+          fi
+
+      - name: Build distribution
+        run: |
+          poetry build
+
+      - name: Check distribution
+        run: |
+          ls -la dist/
+          poetry run twine check dist/*
+
+      - name: Publish to PyPI (using API token)
+        if: env.PYPI_API_TOKEN != ''
+        env:
+          PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+        run: |
+          poetry config pypi-token.pypi $PYPI_API_TOKEN
+          poetry publish
+
+      - name: Publish to PyPI (using trusted publishing)
+        if: env.PYPI_API_TOKEN == ''
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/
+          skip-existing: true
+          verbose: true
+
+      - name: Create release assets info
+        run: |
+          echo "## Published to PyPI 🎉" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Version:** ${{ steps.get-tag.outputs.tag }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Package:** https://pypi.org/project/hping/" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Install with:" >> $GITHUB_STEP_SUMMARY
+          echo '```bash' >> $GITHUB_STEP_SUMMARY
+          echo 'pip install hping' >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
