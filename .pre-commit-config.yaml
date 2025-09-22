@@ -9,7 +9,7 @@ repos:
 
   # isort - Import sorting
   - repo: https://github.com/pycqa/isort
-    rev: 5.13.2
+    rev: 6.0.1
     hooks:
       - id: isort
         args: [--profile=black]
@@ -19,7 +19,7 @@ repos:
     rev: 7.0.0
     hooks:
       - id: flake8
-        args: [--max-line-length=88, --extend-ignore=E203,W503]
+        args: [--max-line-length=88, --extend-ignore=E203]
 
   # mypy - Type checking
   - repo: https://github.com/pre-commit/mirrors-mypy
@@ -31,7 +31,7 @@ repos:
 
   # Built-in hooks for basic checks
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer

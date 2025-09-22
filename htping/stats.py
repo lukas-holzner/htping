@@ -1,9 +1,8 @@
 # htping/stats.py
 
-import sys
 import signal
-from typing import Dict, Any
-
+import sys
+from typing import Any, Dict
 
 # Summary statistics
 stats: Dict[str, Any] = {"transmitted": 0, "received": 0, "rtt_times": []}

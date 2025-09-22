@@ -1,7 +1,8 @@
-import unittest
-from unittest.mock import patch, MagicMock
-from htping.headers import parse_headers
 import io
+import unittest
+from unittest.mock import patch
+
+from htping.headers import parse_headers
 
 
 class TestHeaders(unittest.TestCase):
@@ -39,7 +40,7 @@ class TestHeaders(unittest.TestCase):
         with patch("sys.stdout", new_callable=io.StringIO) as mock_stdout:
             headers = ["invalid-header", "valid: header"]
             result = parse_headers(headers)
-            
+
         output = mock_stdout.getvalue()
         self.assertIn("Invalid header format", output)
         self.assertEqual(result, {"valid": "header"})

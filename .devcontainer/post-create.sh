@@ -25,7 +25,8 @@ echo 'export PATH="/home/vscode/.local/bin:$PATH"' >> ~/.zshrc
 
 # Configure Poetry
 echo "⚙️ Configuring Poetry..."
-poetry config virtualenvs.create false
+poetry config virtualenvs.create true
+poetry config virtualenvs.in-project true
 
 # Install project dependencies
 echo "📚 Installing project dependencies..."
@@ -37,9 +38,9 @@ npm install
 
 # Install pre-commit hooks
 echo "🪝 Installing pre-commit hooks..."
-pip install pre-commit
-pre-commit install
-pre-commit install --hook-type commit-msg
+poetry run pip install pre-commit
+poetry run pre-commit install
+poetry run pre-commit install --hook-type commit-msg
 echo "✅ Pre-commit hooks installed successfully!"
 
 # Set up Git configuration helpers

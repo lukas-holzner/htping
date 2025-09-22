@@ -4,7 +4,7 @@ import argparse
 import sys
 
 from .client import htping
-from .stats import stats, setup_signal_handler
+from .stats import setup_signal_handler, stats
 
 
 def main() -> None:

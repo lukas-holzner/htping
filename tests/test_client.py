@@ -1,8 +1,10 @@
-import unittest
-from unittest.mock import patch, MagicMock
-from htping.client import htping
-import httpx
 import io
+import unittest
+from unittest.mock import MagicMock, patch
+
+import httpx
+
+from htping.client import htping
 
 
 class TestClient(unittest.TestCase):
@@ -13,7 +15,7 @@ class TestClient(unittest.TestCase):
     def test_htping_success(self, mock_client_class):
         mock_client = MagicMock()
         mock_client_class.return_value = mock_client
-        
+
         mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.content = b'{"foo": "bar"}'
@@ -48,7 +50,7 @@ class TestClient(unittest.TestCase):
     def test_htping_post_method(self, mock_client_class):
         mock_client = MagicMock()
         mock_client_class.return_value = mock_client
-        
+
         mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.content = b'{"success": true}'
@@ -69,7 +71,7 @@ class TestClient(unittest.TestCase):
     def test_htping_custom_headers(self, mock_client_class):
         mock_client = MagicMock()
         mock_client_class.return_value = mock_client
-        
+
         mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.content = b'{"success": true}'
@@ -98,7 +100,7 @@ class TestClient(unittest.TestCase):
     def test_htping_json_data(self, mock_client_class):
         mock_client = MagicMock()
         mock_client_class.return_value = mock_client
-        
+
         mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.content = b'{"success": true}'
@@ -107,7 +109,9 @@ class TestClient(unittest.TestCase):
         mock_client.request.return_value = mock_response
 
         with patch("sys.stdout", new_callable=io.StringIO):
-            htping("http://example.com", 0.1, 1, data='{"key": "value"}', stats=self.stats)
+            htping(
+                "http://example.com", 0.1, 1, data='{"key": "value"}', stats=self.stats
+            )
 
         mock_client.request.assert_called_once()
         call_args = mock_client.request.call_args
@@ -146,7 +150,7 @@ class TestClient(unittest.TestCase):
     def test_htping_head_method(self, mock_client_class):
         mock_client = MagicMock()
         mock_client_class.return_value = mock_client
-        
+
         mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.content = b"Some content"
@@ -166,7 +170,7 @@ class TestClient(unittest.TestCase):
     def test_htping_http2(self, mock_client_class):
         mock_client = MagicMock()
         mock_client_class.return_value = mock_client
-        
+
         mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.content = b'{"success": true}'
@@ -179,12 +183,12 @@ class TestClient(unittest.TestCase):
 
         output = mock_stdout.getvalue()
         self.assertIn("protocol=HTTP/2.0", output)
-        
+
         # Check that client was created with http2=True
         mock_client_class.assert_called_once()
         call_args = mock_client_class.call_args
         self.assertTrue(call_args[1]["http2"])
-        
+
         mock_client.request.assert_called_once()
         mock_client.close.assert_called_once()
         self.assertEqual(self.stats["transmitted"], 1)
@@ -194,7 +198,7 @@ class TestClient(unittest.TestCase):
     def test_htping_redirects_info(self, mock_client_class):
         mock_client = MagicMock()
         mock_client_class.return_value = mock_client
-        
+
         mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.content = b'{"success": true}'
@@ -213,14 +217,14 @@ class TestClient(unittest.TestCase):
     def test_invalid_http_method(self):
         with self.assertRaises(ValueError) as context:
             htping("http://example.com", 0.1, 1, method="INVALID", stats=self.stats)
-        
+
         self.assertIn("Unsupported HTTP method", str(context.exception))
 
     @patch("htping.client.httpx.Client")
     def test_invalid_header_format(self, mock_client_class):
         mock_client = MagicMock()
         mock_client_class.return_value = mock_client
-        
+
         mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.content = b'{"success": true}'
@@ -229,7 +233,13 @@ class TestClient(unittest.TestCase):
         mock_client.request.return_value = mock_response
 
         with patch("sys.stdout", new_callable=io.StringIO) as mock_stdout:
-            htping("http://example.com", 0.1, 1, headers=["invalid-header"], stats=self.stats)
+            htping(
+                "http://example.com",
+                0.1,
+                1,
+                headers=["invalid-header"],
+                stats=self.stats,
+            )
 
         output = mock_stdout.getvalue()
         self.assertIn("Invalid header format", output)

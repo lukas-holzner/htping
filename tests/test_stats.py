@@ -1,8 +1,9 @@
-import unittest
-from unittest.mock import patch, MagicMock
-from htping.stats import stats, signal_handler, setup_signal_handler
 import io
 import signal as signal_module
+import unittest
+from unittest.mock import patch
+
+from htping.stats import setup_signal_handler, signal_handler, stats
 
 
 class TestStats(unittest.TestCase):
