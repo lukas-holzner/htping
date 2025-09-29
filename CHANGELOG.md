@@ -1,3 +1,10 @@
+## [0.7.1](https://github.com/lukas-holzner/hping/compare/v0.7.0...v0.7.1) (2025-09-29)
+
+
+### Bug Fixes
+
+* update publish workflow to trigger on release published events and streamline tag handling ([41a7e68](https://github.com/lukas-holzner/hping/commit/41a7e68b1d8b307134de938c0054a915fff276a4))
+
 ## [0.7.0](https://github.com/lukas-holzner/hping/compare/v0.6.2...v0.7.0) (2025-09-22)
 
 
